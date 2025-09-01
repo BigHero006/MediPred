@@ -28,7 +28,7 @@ All models are trained and evaluated using **Google Colab** notebooks.
 ---
 
 ## 📂 Project Structure
-
+```
 multiple-disease-prediction/
 │
 ├── diabetes_prediction.ipynb
@@ -39,7 +39,7 @@ multiple-disease-prediction/
 │ ├── parkinsons.csv
 │ └── heart.csv
 ├── README.md 
-
+```
 
 ## 🚀 How to Use
 
