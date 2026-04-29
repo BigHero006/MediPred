@@ -1,0 +1,345 @@
+================================================================================
+                    MediPred - CLINICAL PARAMETER REFERENCE GUIDE
+================================================================================
+
+This file provides clinical reference ranges (Low, Normal, High) for all parameters
+used in the disease prediction models. Use these ranges to understand what values
+are considered normal vs. abnormal.
+
+================================================================================
+DIABETES PREDICTION - 8 Parameters
+================================================================================
+
+1. PREGNANCIES
+   Description: Number of times the patient has been pregnant
+   Low:     0 pregnancies
+   Normal:  1-3 pregnancies
+   High:    4+ pregnancies
+   Unit: Count
+
+2. GLUCOSE (Fasting Blood Sugar)
+   Description: Fasting blood glucose level
+   Low:     70-99 mg/dL (fasting)
+   Normal:  100-125 mg/dL (normal to pre-diabetic range)
+   High:    126+ mg/dL (diabetic range)
+   Unit: mg/dL
+
+3. BLOOD PRESSURE (Resting)
+   Description: Systolic blood pressure measurement
+   Low:     <90 mmHg (hypotension)
+   Normal:  90-120 mmHg (optimal to normal)
+   High:    120-140+ mmHg (elevated to hypertension)
+   Unit: mmHg
+
+4. SKIN THICKNESS (Triceps)
+   Description: Triceps skin fold thickness measurement
+   Low:     <10 mm
+   Normal:  10-30 mm
+   High:    30+ mm (indicates higher body fat)
+   Unit: mm
+
+5. INSULIN (2-Hour Serum Insulin)
+   Description: Insulin level after glucose tolerance test
+   Low:     0-16 mU/L
+   Normal:  16-166 mU/L
+   High:    166+ mU/L (insulin resistance)
+   Unit: mU/L
+
+6. BMI (Body Mass Index)
+   Description: Weight to height ratio (weight in kg / height in m²)
+   Low:     <18.5 (underweight)
+   Normal:  18.5-24.9 (healthy weight)
+   High:    25-29.9 (overweight) / 30+ (obese)
+   Unit: kg/m²
+
+7. DIABETES PEDIGREE FUNCTION
+   Description: Family history of diabetes (calculated score)
+   Low:     0.0-0.4 (minimal genetic risk)
+   Normal:  0.4-0.9 (moderate genetic risk)
+   High:    0.9+ (significant genetic risk)
+   Unit: Score (0-2.5)
+
+8. AGE
+   Description: Age of the patient
+   Low:     <30 years (young adult)
+   Normal:  30-55 years (middle age)
+   High:    55+ years (senior)
+   Unit: Years
+
+================================================================================
+HEART DISEASE PREDICTION - 13 Parameters
+================================================================================
+
+1. AGE
+   Description: Age of the patient
+   Low:     <40 years
+   Normal:  40-60 years
+   High:    60+ years
+   Unit: Years
+
+2. SEX
+   Description: Gender of patient
+   Value: 0 = Female, 1 = Male
+   Unit: Binary
+
+3. CHEST PAIN TYPE
+   Description: Type of chest pain experienced
+   0 = Typical angina (classic heart pain)
+   1 = Atypical angina (unusual chest pain)
+   2 = Non-anginal pain (not cardiac)
+   3 = Asymptomatic (no chest pain)
+   Unit: Category (0-3)
+
+4. RESTING BLOOD PRESSURE
+   Description: Systolic blood pressure at rest
+   Low:     <90 mmHg (hypotension)
+   Normal:  90-120 mmHg (optimal to normal)
+   High:    140+ mmHg (hypertension)
+   Unit: mmHg
+
+5. CHOLESTEROL (Serum)
+   Description: Total cholesterol level
+   Low:     <200 mg/dL (desirable)
+   Normal:  200-239 mg/dL (borderline high)
+   High:    240+ mg/dL (high risk)
+   Unit: mg/dL
+
+6. FASTING BLOOD SUGAR
+   Description: Fasting glucose >120 mg/dL
+   0 = No (≤120 mg/dL - normal)
+   1 = Yes (>120 mg/dL - elevated)
+   Unit: Binary
+
+7. RESTING ECG RESULTS
+   Description: Electrocardiogram findings at rest
+   0 = Normal
+   1 = ST-T wave abnormality (possible ischemia)
+   2 = LV hypertrophy (left ventricle enlarged)
+   Unit: Category (0-2)
+
+8. MAX HEART RATE ACHIEVED
+   Description: Maximum heart rate during exercise test
+   Low:     <60 bpm (athletic or abnormal)
+   Normal:  100-140 bpm (normal for exercise)
+   High:    140+ bpm (high exertion response)
+   Unit: bpm (beats per minute)
+
+9. EXERCISE INDUCED ANGINA
+   Description: Chest pain triggered by exercise
+   0 = No (normal response)
+   1 = Yes (abnormal - ischemic response)
+   Unit: Binary
+
+10. ST DEPRESSION (Oldpeak)
+    Description: ST segment depression induced by exercise relative to rest
+    Low:     0.0-0.5 mm (normal)
+    Normal:  0.5-1.0 mm (mild depression)
+    High:    1.0+ mm (significant ischemic change)
+    Unit: mm
+
+11. ST SLOPE
+    Description: Slope of ST segment during exercise
+    0 = Upsloping (favorable)
+    1 = Flat (neutral)
+    2 = Downsloping (unfavorable/ischemic)
+    Unit: Category (0-2)
+
+12. MAJOR VESSELS (Calcification)
+    Description: Number of major vessels with >50% narrowing (visible on fluoroscopy)
+    Low:     0 vessels (normal)
+    Normal:  0-1 vessels (mild disease)
+    High:    2-3 vessels (significant disease)
+    Unit: Count (0-3)
+
+13. THALASSEMIA
+    Description: Blood disorder related to abnormal hemoglobin
+    0 = Normal
+    1 = Fixed defect (old myocardial infarction)
+    2 = Reversible defect (ischemia during stress)
+    3 = Other/Unknown
+    Unit: Category (0-3)
+
+================================================================================
+PARKINSON'S PREDICTION - 22 Voice/Vocal Metrics
+================================================================================
+
+Note: These are acoustic measurements derived from voice recordings. Most are
+standardized in the Unified Parkinson's Disease Rating Scale (UPDRS).
+
+1. MDVP FO (Fundamental Frequency)
+   Description: Average vocal frequency
+   Low:     <100 Hz (abnormal, too low)
+   Normal:  120-250 Hz (typical for adults)
+   High:    250+ Hz (abnormal, too high)
+   Unit: Hz
+
+2. MDVP FHI (Maximum Fundamental Frequency)
+   Description: Highest frequency reached in phonation
+   Low:     <150 Hz
+   Normal:  180-350 Hz
+   High:    350+ Hz
+   Unit: Hz
+
+3. MDVP FLO (Minimum Fundamental Frequency)
+   Description: Lowest frequency reached in phonation
+   Low:     <80 Hz (very low)
+   Normal:  80-150 Hz
+   High:    150+ Hz
+   Unit: Hz
+
+4. MDVP JITTER (%)
+   Description: Perturbation in frequency as percentage
+   Low:     0.0-0.5% (healthy)
+   Normal:  0.5-1.0% (mild perturbation)
+   High:    1.0%+ (significant instability - Parkinsons indicator)
+   Unit: Percentage
+
+5. MDVP JITTER (Absolute)
+   Description: Absolute perturbation in seconds
+   Low:     0.0-0.00002 sec (healthy)
+   Normal:  0.00002-0.00005 sec
+   High:    0.00005+ sec (voice instability)
+   Unit: Seconds
+
+6. RAP (Relative Amplitude Perturbation)
+   Description: Relative difference of amplitude in consecutive periods
+   Low:     0.0-0.003 (healthy)
+   Normal:  0.003-0.006 (mild perturbation)
+   High:    0.006+ (significant - Parkinsons indicator)
+   Unit: Ratio
+
+7. PPQ (Pitch Period Perturbation Quotient)
+   Description: Smoothed perturbation of pitch periods
+   Low:     0.0-0.003 (healthy)
+   Normal:  0.003-0.006
+   High:    0.006+ (voice instability)
+   Unit: Ratio
+
+8. JITTER DDP (Jitter Difference of Differences)
+   Description: Average absolute difference of differences between periods
+   Low:     0.0-0.006 (healthy)
+   Normal:  0.006-0.012
+   High:    0.012+ (significant irregularity)
+   Unit: Ratio
+
+9. MDVP SHIMMER
+   Description: Perturbation in amplitude (linear scale)
+   Low:     0.0-0.03 (healthy)
+   Normal:  0.03-0.06 (mild shimmer)
+   High:    0.06+ (significant amplitude variation - Parkinsons)
+   Unit: Ratio
+
+10. MDVP SHIMMER (dB)
+    Description: Perturbation in amplitude (decibel scale)
+    Low:     0.0-0.3 dB (healthy)
+    Normal:  0.3-0.6 dB (mild amplitude variation)
+    High:    0.6+ dB (significant - Parkinsons indicator)
+    Unit: dB (decibels)
+
+11. SHIMMER APQ3
+    Description: 3-period amplitude perturbation quotient
+    Low:     0.0-0.015 (healthy)
+    Normal:  0.015-0.03
+    High:    0.03+ (amplitude instability)
+    Unit: Ratio
+
+12. SHIMMER APQ5
+    Description: 5-period amplitude perturbation quotient
+    Low:     0.0-0.02 (healthy)
+    Normal:  0.02-0.04
+    High:    0.04+ (significant instability)
+    Unit: Ratio
+
+13. MDVP APQ
+    Description: Amplitude perturbation quotient
+    Low:     0.0-0.02 (healthy)
+    Normal:  0.02-0.04
+    High:    0.04+ (irregular amplitude)
+    Unit: Ratio
+
+14. SHIMMER DDA
+    Description: Difference of differences of amplitude
+    Low:     0.0-0.03 (healthy)
+    Normal:  0.03-0.06
+    High:    0.06+ (significant variation - Parkinsons)
+    Unit: Ratio
+
+15. NHR (Noise-to-Harmonics Ratio)
+    Description: Noise content relative to harmonic content
+    Low:     0.0-0.05 (healthy voice)
+    Normal:  0.05-0.15 (some noise)
+    High:    0.15+ (high noise - Parkinsons indicator)
+    Unit: Ratio
+
+16. HNR (Harmonics-to-Noise Ratio)
+    Description: Ratio of harmonic to noise components (inverse of NHR)
+    Low:     <15 dB (high noise - Parkinsons)
+    Normal:  15-25 dB (balanced)
+    High:    25+ dB (very clear voice)
+    Unit: dB
+
+17. RPDE (Recurrence Period Density Entropy)
+    Description: Complexity measure of vocal patterns
+    Low:     <0.3 (simple - possible pathology)
+    Normal:  0.3-0.6 (moderate complexity)
+    High:    0.6+ (complex patterns - healthier)
+    Unit: Entropy (0-1)
+
+18. DFA (Detrended Fluctuation Analysis)
+    Description: Self-similarity of voice signal
+    Low:     <0.6 (low correlation - possible pathology)
+    Normal:  0.6-0.8 (moderate correlation)
+    High:    0.8+ (strong self-similarity - healthier)
+    Unit: Scale exponent (0-1)
+
+19. SPREAD1
+    Description: Non-linear measure of frequency variation
+    Low:     <-6 (abnormal)
+    Normal:  -6 to -4 (typical range)
+    High:    -4+ (abnormal - too spread)
+    Unit: Score (-10 to 10)
+
+20. SPREAD2
+    Description: Non-linear measure of frequency variation (complementary)
+    Low:     <0.2 (low variation)
+    Normal:  0.2-0.5 (typical variation)
+    High:    0.5+ (high variation)
+    Unit: Score (0-1)
+
+21. D2 (Correlation Dimension)
+    Description: Complexity of voice dynamics
+    Low:     <2 (low complexity - possible pathology)
+    Normal:  2-3 (moderate complexity)
+    High:    3+ (high complexity)
+    Unit: Dimensionality (0-5)
+
+22. PPE (Pitch Period Entropy)
+    Description: Entropy of voice pitch changes
+    Low:     <0.1 (very low variation - pathology)
+    Normal:  0.1-0.4 (typical variation)
+    High:    0.4+ (high entropy)
+    Unit: Entropy (0-1)
+
+================================================================================
+HOW TO USE THIS GUIDE
+================================================================================
+
+1. For DIAGNOSIS: Compare patient's measured values against these ranges
+2. For MODEL INPUT: Enter values within the specified ranges (though model can accept
+                    wider ranges for research purposes)
+3. For INTERPRETATION: Values marked as "High" tend to indicate elevated disease risk
+4. DISCLAIMER: These ranges are clinical approximations. Always consult medical
+               professionals for definitive diagnosis. ML models are supportive tools
+               only and should not replace clinical judgment.
+
+================================================================================
+IMPORTANT NOTES
+================================================================================
+
+- All measurements should be taken under standardized clinical conditions
+- For Parkinson's voice metrics: Use consistent audio recording settings
+- Some parameters have overlap zones; clinical context is important
+- Model accuracy varies by disease (Diabetes: 72%, Heart: 80%, Parkinson's: 95%)
+- These are screening tools, not diagnostic instruments
+
+================================================================================
