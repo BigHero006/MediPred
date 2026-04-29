@@ -236,6 +236,7 @@ with st.sidebar:
         label_visibility="visible"
     )
     st.markdown("---")
+    st.warning('⚠️ **Disclaimer**: These ML models are screening tools only. Predictions should never replace professional medical diagnosis. Always consult healthcare providers for clinical decisions.')
 
 
 
@@ -294,22 +295,22 @@ if select == 'Diabetes Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            Pregnancies = st.number_input('Pregnancies', min_value=0, max_value=20, value=0)
-            Glucose = st.number_input('Glucose (mg/dL)', min_value=0, max_value=300, value=0)
+            Pregnancies = st.number_input('Pregnancies', min_value=0, max_value=20, value=2)
+            Glucose = st.number_input('Glucose (mg/dL)', min_value=0, max_value=300, value=100)
 
         with col2:
-            BloodPressure = st.number_input('Blood pressure (mmHg)', min_value=0, max_value=200, value=0)
-            SkinThickness = st.number_input('Skin thickness (mm)', min_value=0, max_value=100, value=0)
+            BloodPressure = st.number_input('Blood pressure (mmHg)', min_value=0, max_value=200, value=70)
+            SkinThickness = st.number_input('Skin thickness (mm)', min_value=0, max_value=100, value=20)
 
         with col3:
-            Insulin = st.number_input('Insulin', min_value=0, max_value=800, value=0)
-            BMI = st.number_input('BMI', min_value=0.0, max_value=70.0, value=0.0, step=0.1)
+            Insulin = st.number_input('Insulin', min_value=0, max_value=800, value=80)
+            BMI = st.number_input('BMI', min_value=0.0, max_value=70.0, value=24.0, step=0.1)
 
         col4, col5 = st.columns(2)
         with col4:
-            DiabetesPedigreeFunction = st.number_input('Diabetes pedigree function', min_value=0.0, max_value=2.5, value=0.0, step=0.1)
+            DiabetesPedigreeFunction = st.number_input('Diabetes pedigree function', min_value=0.0, max_value=2.5, value=0.3, step=0.1)
         with col5:
-            Age = st.number_input('Age', min_value=0, max_value=120, value=0)
+            Age = st.number_input('Age', min_value=0, max_value=120, value=35)
 
     col_button, col_empty = st.columns([1, 3])
     with col_button:
@@ -327,6 +328,12 @@ if select == 'Diabetes Prediction':
                 float(DiabetesPedigreeFunction),
                 int(Age)
             ]
+
+            # Check if most values are zero (unrealistic input)
+            non_zero_count = sum(1 for val in input_data if val != 0)
+            if non_zero_count < 3:
+                st.warning('⚠️ Most input values are zero. Please enter realistic patient measurements for accurate predictions. Zero values will produce unreliable results.')
+                st.stop()
 
             diabetes_predict = diabetes_model.predict([input_data])
             probability = diabetes_model.predict_proba([input_data])
@@ -361,28 +368,28 @@ if select == 'Heart Disease Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            Age = st.number_input('Age', min_value=0, max_value=120, value=0)
+            Age = st.number_input('Age', min_value=0, max_value=120, value=50)
             Sex = st.selectbox('Sex', ['Female (0)', 'Male (1)'], key='heart_sex')
             Sex = int(Sex.split('(')[1].split(')')[0])
-            Trestbps = st.number_input('Resting blood pressure (mmHg)', min_value=0, max_value=250, value=0)
+            Trestbps = st.number_input('Resting blood pressure (mmHg)', min_value=0, max_value=250, value=120)
 
         with col2:
             CP = st.selectbox('Chest pain type', ['Typical angina (0)', 'Atypical angina (1)', 'Non-anginal pain (2)', 'Asymptomatic (3)'], key='heart_cp')
             CP = int(CP.split('(')[1].split(')')[0])
-            Chol = st.number_input('Cholesterol (mg/dL)', min_value=0, max_value=600, value=0)
+            Chol = st.number_input('Cholesterol (mg/dL)', min_value=0, max_value=600, value=200)
             Fbs = st.selectbox('Fasting blood sugar > 120 mg/dL', ['No (0)', 'Yes (1)'], key='heart_fbs')
             Fbs = int(Fbs.split('(')[1].split(')')[0])
 
         with col3:
             Restecg = st.selectbox('Resting ECG results', ['Normal (0)', 'ST-T abnormality (1)', 'LV hypertrophy (2)'], key='heart_ecg')
             Restecg = int(Restecg.split('(')[1].split(')')[0])
-            Thalach = st.number_input('Max heart rate achieved (bpm)', min_value=0, max_value=250, value=0)
+            Thalach = st.number_input('Max heart rate achieved (bpm)', min_value=0, max_value=250, value=140)
             Exang = st.selectbox('Exercise induced angina', ['No (0)', 'Yes (1)'], key='heart_exang')
             Exang = int(Exang.split('(')[1].split(')')[0])
 
         col4, col5 = st.columns(2)
         with col4:
-            Oldpeak = st.number_input('ST depression (Oldpeak)', min_value=0.0, max_value=10.0, value=0.0, step=0.1)
+            Oldpeak = st.number_input('ST depression (Oldpeak)', min_value=0.0, max_value=10.0, value=0.5, step=0.1)
             Slope = st.selectbox('ST slope', ['Upsloping (0)', 'Flat (1)', 'Downsloping (2)'], key='heart_slope')
             Slope = int(Slope.split('(')[1].split(')')[0])
 
@@ -412,6 +419,12 @@ if select == 'Heart Disease Prediction':
                 int(Ca),
                 int(Thal)
             ]
+
+            # Check if most values are zero (unrealistic input)
+            non_zero_count = sum(1 for val in input_data if val != 0)
+            if non_zero_count < 5:
+                st.warning('⚠️ Most input values are zero. Please enter realistic patient measurements for accurate predictions. Zero values will produce unreliable results.')
+                st.stop()
 
             heart_disease_predict = heart_disease_model.predict([input_data])
             probability = heart_disease_model.predict_proba([input_data])
@@ -446,38 +459,38 @@ if select == 'Parkinsons Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            MDVP_Fo = st.number_input('MDVP Fo (Hz)', min_value=0.0, max_value=500.0, value=0.0, step=0.1)
-            MDVP_Fhi = st.number_input('MDVP Fhi (Hz)', min_value=0.0, max_value=500.0, value=0.0, step=0.1)
-            MDVP_Flo = st.number_input('MDVP Flo (Hz)', min_value=0.0, max_value=500.0, value=0.0, step=0.1)
-            MDVP_Jitter_Percent = st.number_input('MDVP jitter (%)', min_value=0.0, max_value=1.0, value=0.0, step=0.0001, format='%.4f')
-            MDVP_Jitter_Abs = st.number_input('MDVP jitter (abs)', min_value=0.0, max_value=0.1, value=0.0, step=0.00001, format='%.5f')
+            MDVP_Fo = st.number_input('MDVP Fo (Hz)', min_value=0.0, max_value=500.0, value=150.0, step=0.1)
+            MDVP_Fhi = st.number_input('MDVP Fhi (Hz)', min_value=0.0, max_value=500.0, value=200.0, step=0.1)
+            MDVP_Flo = st.number_input('MDVP Flo (Hz)', min_value=0.0, max_value=500.0, value=100.0, step=0.1)
+            MDVP_Jitter_Percent = st.number_input('MDVP jitter (%)', min_value=0.0, max_value=1.0, value=0.01, step=0.0001, format='%.4f')
+            MDVP_Jitter_Abs = st.number_input('MDVP jitter (abs)', min_value=0.0, max_value=0.1, value=0.00006, step=0.00001, format='%.5f')
 
         with col2:
-            MDVP_Shimmer = st.number_input('MDVP shimmer', min_value=0.0, max_value=1.0, value=0.0, step=0.001, format='%.3f')
-            MDVP_Shimmer_dB = st.number_input('MDVP shimmer (dB)', min_value=0.0, max_value=5.0, value=0.0, step=0.01, format='%.2f')
-            Shimmer_APQ3 = st.number_input('Shimmer APQ3', min_value=0.0, max_value=0.1, value=0.0, step=0.001, format='%.3f')
-            Shimmer_APQ5 = st.number_input('Shimmer APQ5', min_value=0.0, max_value=0.1, value=0.0, step=0.001, format='%.3f')
-            MDVP_APQ = st.number_input('MDVP APQ', min_value=0.0, max_value=0.1, value=0.0, step=0.001, format='%.3f')
-            Shimmer_DDA = st.number_input('Shimmer DDA', min_value=0.0, max_value=0.1, value=0.0, step=0.001, format='%.3f')
+            MDVP_Shimmer = st.number_input('MDVP shimmer', min_value=0.0, max_value=1.0, value=0.025, step=0.001, format='%.3f')
+            MDVP_Shimmer_dB = st.number_input('MDVP shimmer (dB)', min_value=0.0, max_value=5.0, value=0.25, step=0.01, format='%.2f')
+            Shimmer_APQ3 = st.number_input('Shimmer APQ3', min_value=0.0, max_value=0.1, value=0.012, step=0.001, format='%.3f')
+            Shimmer_APQ5 = st.number_input('Shimmer APQ5', min_value=0.0, max_value=0.1, value=0.015, step=0.001, format='%.3f')
+            MDVP_APQ = st.number_input('MDVP APQ', min_value=0.0, max_value=0.1, value=0.018, step=0.001, format='%.3f')
+            Shimmer_DDA = st.number_input('Shimmer DDA', min_value=0.0, max_value=0.1, value=0.025, step=0.001, format='%.3f')
 
         with col3:
-            NHR = st.number_input('NHR', min_value=0.0, max_value=1.0, value=0.0, step=0.01, format='%.2f')
-            HNR = st.number_input('HNR', min_value=0.0, max_value=40.0, value=0.0, step=0.5)
-            MDVP_RAP = st.number_input('MDVP RAP', min_value=0.0, max_value=0.1, value=0.0, step=0.0001, format='%.4f')
-            MDVP_PPQ = st.number_input('MDVP PPQ', min_value=0.0, max_value=0.1, value=0.0, step=0.0001, format='%.4f')
-            Jitter_DDP = st.number_input('Jitter DDP', min_value=0.0, max_value=0.1, value=0.0, step=0.0001, format='%.4f')
+            NHR = st.number_input('NHR', min_value=0.0, max_value=1.0, value=0.025, step=0.01, format='%.2f')
+            HNR = st.number_input('HNR', min_value=0.0, max_value=40.0, value=21.0, step=0.5)
+            MDVP_RAP = st.number_input('MDVP RAP', min_value=0.0, max_value=0.1, value=0.005, step=0.0001, format='%.4f')
+            MDVP_PPQ = st.number_input('MDVP PPQ', min_value=0.0, max_value=0.1, value=0.006, step=0.0001, format='%.4f')
+            Jitter_DDP = st.number_input('Jitter DDP', min_value=0.0, max_value=0.1, value=0.008, step=0.0001, format='%.4f')
 
         col4, col5 = st.columns(2)
 
         with col4:
-            RPDE = st.number_input('RPDE', min_value=0.0, max_value=1.0, value=0.0, step=0.01, format='%.2f')
-            DFA = st.number_input('DFA', min_value=0.0, max_value=1.0, value=0.0, step=0.01, format='%.2f')
-            Spread1 = st.number_input('Spread1', min_value=-10.0, max_value=10.0, value=0.0, step=0.1, format='%.1f')
+            RPDE = st.number_input('RPDE', min_value=0.0, max_value=1.0, value=0.5, step=0.01, format='%.2f')
+            DFA = st.number_input('DFA', min_value=0.0, max_value=1.0, value=0.65, step=0.01, format='%.2f')
+            Spread1 = st.number_input('Spread1', min_value=-10.0, max_value=10.0, value=-5.5, step=0.1, format='%.1f')
 
         with col5:
-            Spread2 = st.number_input('Spread2', min_value=0.0, max_value=1.0, value=0.0, step=0.01, format='%.2f')
-            D2 = st.number_input('D2', min_value=0.0, max_value=5.0, value=0.0, step=0.1, format='%.1f')
-            PPE = st.number_input('PPE', min_value=0.0, max_value=1.0, value=0.0, step=0.01, format='%.2f')
+            Spread2 = st.number_input('Spread2', min_value=0.0, max_value=1.0, value=0.19, step=0.01, format='%.2f')
+            D2 = st.number_input('D2', min_value=0.0, max_value=5.0, value=2.1, step=0.1, format='%.1f')
+            PPE = st.number_input('PPE', min_value=0.0, max_value=1.0, value=0.19, step=0.01, format='%.2f')
 
     col_button, col_empty = st.columns([1, 3])
     with col_button:
@@ -509,6 +522,12 @@ if select == 'Parkinsons Prediction':
                 float(D2),
                 float(PPE)
             ]
+
+            # Check if most values are zero (unrealistic input)
+            non_zero_count = sum(1 for val in input_data if val != 0)
+            if non_zero_count < 8:
+                st.warning('⚠️ Most input values are zero. Please enter realistic vocal measurements for accurate predictions. Zero values will produce unreliable results.')
+                st.stop()
 
             parkinson_predict = parkinson_model.predict([input_data])
             probability = parkinson_model.predict_proba([input_data])

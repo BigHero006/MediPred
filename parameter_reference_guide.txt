@@ -342,4 +342,15 @@ IMPORTANT NOTES
 - Model accuracy varies by disease (Diabetes: 72%, Heart: 80%, Parkinson's: 95%)
 - These are screening tools, not diagnostic instruments
 
+**CRITICAL LIMITATIONS:**
+The current models (Heart Disease and Parkinson's) may show inflated risk predictions
+due to biases in the training data distribution. Before deployment to production:
+1. Retrain models with better-balanced training datasets
+2. Validate predictions against recent clinical data
+3. Add confidence intervals and uncertainty estimates
+4. Perform external validation on independent patient cohorts
+5. Document any known biases or limitations in user interfaces
+
+**Always verify predictions with qualified healthcare professionals.**
+
 ================================================================================
