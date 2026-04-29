@@ -41,24 +41,5 @@ multiple-disease-prediction/
 ├── README.md 
 ```
 
-## 🚀 How to Use
-
-1. **Clone the repository**:
-
-git clone https://github.com/your-username/multiple-disease-prediction.gitcd multiple-disease-prediction](https://github.com/BigHero006/MultipleDiseasePrediction
-
-2. Open a Notebook in Google Colab:
-
-- Upload the notebooks and datasets to Google Drive or open directly via Colab.
-
-- For each disease, run the corresponding .ipynb file:
-
-a.diabetes_prediction.ipynb
-
-b.parkinsons_prediction.ipynb
-
-c.heart_disease_prediction.ipynb
-
-3.Run all cells to train and test the models.
 
 
