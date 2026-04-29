@@ -6,13 +6,17 @@ Created on Tue Jun  3 20:12:29 2025
 """
 
 import pickle
+from pathlib import Path
 import streamlit as st
 from streamlit_option_menu import option_menu
 
 # Loading the saved models
-diabetes_model = pickle.load(open('C:/Users/Dell/Desktop/DSProject1/models/Diabetes_model.sav', 'rb'))  # Corrected spelling
-heart_disease_model = pickle.load(open('C:/Users/Dell/Desktop/DSProject1/models/Heart_model.sav', 'rb'))
-parkinson_model = pickle.load(open('C:/Users/Dell/Desktop/DSProject1/models/Parkinson_model.sav', 'rb'))
+BASE_DIR = Path(__file__).resolve().parent
+MODELS_DIR = BASE_DIR / 'models'
+
+diabetes_model = pickle.load(open(MODELS_DIR / 'Diabetes_model.sav', 'rb'))
+heart_disease_model = pickle.load(open(MODELS_DIR / 'Heart_model.sav', 'rb'))
+parkinson_model = pickle.load(open(MODELS_DIR / 'Parkinson_model.sav', 'rb'))
 
 # Sidebar for navigation
 with st.sidebar:
