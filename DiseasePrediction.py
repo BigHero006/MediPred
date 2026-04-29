@@ -8,7 +8,6 @@ Created on Tue Jun  3 20:12:29 2025
 import pickle
 from pathlib import Path
 import streamlit as st
-from streamlit_option_menu import option_menu
 
 # Loading the saved models
 BASE_DIR = Path(__file__).resolve().parent
@@ -19,13 +18,11 @@ heart_disease_model = pickle.load(open(MODELS_DIR / 'Heart_model.sav', 'rb'))
 parkinson_model = pickle.load(open(MODELS_DIR / 'Parkinson_model.sav', 'rb'))
 
 # Sidebar for navigation
-with st.sidebar:
-    select = option_menu('Disease Prediction System using ML',
-                         ['Diabetes Prediction',
-                          'Heart Disease Prediction',
-                          'Parkinsons Prediction'],
-                         icons=['bandaid', 'heart-pulse', 'person-wheelchair'],
-                         default_index=0)
+st.sidebar.title("Disease Prediction System")
+select = st.sidebar.radio(
+    "Select a prediction model:",
+    ['Diabetes Prediction', 'Heart Disease Prediction', 'Parkinsons Prediction']
+)
 
 # Diabetes prediction page
 if select == 'Diabetes Prediction':
