@@ -12,136 +12,208 @@ import streamlit as st
 # Configure page
 st.set_page_config(
     page_title="MediPred - Disease Prediction System",
-    page_icon="🏥",
+    page_icon="M",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for a more restrained, clinical layout
 st.markdown("""
     <style>
-    /* Main theme colors */
     :root {
-        --primary-color: #0066cc;
-        --success-color: #00cc66;
-        --danger-color: #ff3333;
-        --warning-color: #ffcc00;
+        --primary-color: #204a87;
+        --primary-hover: #173a6b;
+        --surface: #ffffff;
+        --surface-muted: #f6f8fb;
+        --border: #dbe3ee;
+        --text-main: #1f2937;
+        --text-muted: #5b6472;
+        --success-bg: #eef8f1;
+        --success-border: #4f9d69;
+        --warning-bg: #fff6e8;
+        --warning-border: #d9822b;
     }
-    
-    /* Header styling */
-    .main-header {
-        background: linear-gradient(135deg, #0066cc 0%, #00ccff 100%);
-        color: white;
-        padding: 30px;
-        border-radius: 10px;
-        margin-bottom: 30px;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    html, body, [class*="css"] {
+        font-family: "Segoe UI", Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--text-main);
     }
-    
-    .main-header h1 {
-        font-size: 2.5em;
+
+    .stApp {
+        background: linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+    }
+
+    section.main > div {
+        padding-top: 1.25rem;
+    }
+
+    .block-container {
+        max-width: 1180px;
+        padding-top: 1rem;
+        padding-bottom: 2rem;
+    }
+
+    .page-shell {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(219, 227, 238, 0.8);
+        border-radius: 20px;
+        padding: 1.75rem 1.5rem;
+        box-shadow: 0 18px 40px rgba(31, 41, 55, 0.06);
+    }
+
+    .page-header {
+        background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 1.4rem 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .page-header .eyebrow {
+        margin: 0 0 0.35rem 0;
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 700;
+    }
+
+    .page-header h1 {
         margin: 0;
-        font-weight: bold;
+        font-size: 2rem;
+        line-height: 1.15;
+        color: var(--text-main);
     }
-    
-    .main-header p {
-        font-size: 1.1em;
-        margin: 10px 0 0 0;
-        opacity: 0.9;
+
+    .page-header p {
+        margin: 0.45rem 0 0 0;
+        color: var(--text-muted);
+        font-size: 1rem;
     }
-    
-    /* Input section styling */
-    .input-section {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 5px solid #0066cc;
-        margin-bottom: 20px;
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.85rem;
+        margin-bottom: 1rem;
     }
-    
-    .input-section-title {
-        font-size: 1.3em;
-        font-weight: bold;
-        color: #0066cc;
-        margin-bottom: 15px;
+
+    .info-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1rem 1rem 0.9rem 1rem;
     }
-    
-    /* Result cards */
+
+    .info-card .label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.35rem;
+    }
+
+    .info-card .value {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin: 1.15rem 0 0.8rem 0;
+    }
+
+    .card-surface {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1rem 1rem 0.25rem 1rem;
+        margin-bottom: 1rem;
+    }
+
     .result-card {
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
-        text-align: center;
-        font-size: 1.2em;
-        font-weight: bold;
+        border-radius: 16px;
+        padding: 1rem 1.1rem;
+        margin-top: 1rem;
+        border: 1px solid var(--border);
+        background: var(--surface);
     }
-    
+
+    .result-card .status {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.25rem;
+        color: var(--text-muted);
+    }
+
+    .result-card .headline {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 0.2rem;
+    }
+
+    .result-card .detail {
+        color: var(--text-muted);
+    }
+
     .result-positive {
-        background-color: #ffe6e6;
-        border-left: 5px solid #ff3333;
-        color: #cc0000;
+        background: var(--success-bg);
+        border-color: var(--success-border);
     }
-    
+
     .result-negative {
-        background-color: #e6ffe6;
-        border-left: 5px solid #00cc66;
-        color: #009900;
+        background: #f4f8fb;
+        border-color: var(--border);
     }
-    
-    /* Button styling */
+
     .stButton > button {
-        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+        background: var(--primary-color);
         color: white;
         border: none;
-        padding: 12px 30px;
-        font-size: 1.1em;
+        padding: 0.85rem 1.2rem;
+        font-size: 0.98rem;
         border-radius: 8px;
-        font-weight: bold;
+        font-weight: 600;
         width: 100%;
-        transition: all 0.3s ease;
+        box-shadow: 0 8px 18px rgba(32, 74, 135, 0.16);
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 102, 204, 0.3);
+        background: var(--primary-hover);
+        box-shadow: 0 10px 22px rgba(32, 74, 135, 0.22);
     }
-    
-    /* Sidebar styling */
+
     .sidebar-header {
-        font-size: 1.5em;
+        font-size: 1.25em;
         font-weight: bold;
-        margin-bottom: 20px;
-        padding: 15px;
-        background: linear-gradient(135deg, #0066cc 0%, #00ccff 100%);
+        margin-bottom: 14px;
+        padding: 14px 16px;
+        background: #203b57;
         color: white;
-        border-radius: 8px;
+        border-radius: 12px;
         text-align: center;
     }
-    
-    /* Info boxes */
-    .info-box {
-        background: #e6f2ff;
-        border-left: 4px solid #0066cc;
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 15px;
+
+    .sidebar-note {
+        background: var(--surface-muted);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.9rem 0.95rem;
+        color: var(--text-muted);
+        font-size: 0.93rem;
+        line-height: 1.5;
     }
-    
-    .info-box h4 {
-        color: #0066cc;
-        margin-top: 0;
-    }
-    
-    /* Accuracy badges */
-    .accuracy-badge {
-        display: inline-block;
-        background: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: bold;
-        margin: 5px;
+
+    .hint-text {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: -0.15rem;
+        margin-bottom: 0.8rem;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -156,70 +228,92 @@ parkinson_model = pickle.load(open(MODELS_DIR / 'Parkinson_model.sav', 'rb'))
 
 # Sidebar navigation
 with st.sidebar:
-    st.markdown('<div class="sidebar-header">🏥 MediPred</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-header">MediPred</div>', unsafe_allow_html=True)
     st.markdown("---")
     select = st.radio(
         "Select Prediction Model:",
-        ['🩺 Diabetes Prediction', '❤️ Heart Disease Prediction', '🧠 Parkinsons Prediction'],
+        ['Diabetes Prediction', 'Heart Disease Prediction', 'Parkinsons Prediction'],
         label_visibility="visible"
     )
     st.markdown("---")
-    st.markdown("""
-    ### About MediPred
-    MediPred uses machine learning models trained on medical datasets to provide disease predictions.
-    - **Diabetes Model**: 72% Accuracy
-    - **Heart Disease Model**: 80% Accuracy  
-    - **Parkinson's Model**: 95% Accuracy
-    
-    ⚠️ **Disclaimer**: These predictions are for educational purposes only and should not replace professional medical advice.
-    """)
-    
-# Extract base names for comparison
-select_base = select.split()[-2:] if 'Diabetes' in select else select.split()[-2:]
+
+
+
+def render_page_header(title: str, subtitle: str, eyebrow: str) -> None:
+    st.markdown(
+        f"""
+        <div class="page-header">
+            <div class="eyebrow">{eyebrow}</div>
+            <h1>{title}</h1>
+            <p>{subtitle}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_metric_cards(items) -> None:
+    cards = ''.join(
+        f'<div class="info-card"><div class="label">{label}</div><div class="value">{value}</div></div>'
+        for label, value in items
+    )
+    st.markdown(f'<div class="info-grid">{cards}</div>', unsafe_allow_html=True)
+
+
+def render_result(is_positive: bool, label: str, probability: float) -> None:
+    class_name = 'result-positive' if is_positive else 'result-negative'
+    headline = 'Higher risk detected' if is_positive else 'Lower risk detected'
+    detail_label = 'Risk estimate' if is_positive else 'Confidence'
+    st.markdown(
+        f"""
+        <div class="result-card {class_name}">
+            <div class="status">{label}</div>
+            <div class="headline">{headline}</div>
+            <div class="detail">{detail_label}: {probability:.1f}%</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # Diabetes prediction page
-if 'Diabetes' in select:
-    # Header
-    st.markdown('<div class="main-header"><h1>🩺 Diabetes Prediction System</h1><p>Enter your health metrics below for diabetes risk assessment</p></div>', unsafe_allow_html=True)
-    
-    # Info section
-    st.markdown("""
-    <div class="info-box">
-    <h4>📋 About This Assessment</h4>
-    This model analyzes medical indicators to predict diabetes risk based on the provided health metrics.
-    <span class="accuracy-badge">72% Accuracy</span>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="input-section"><div class="input-section-title">📊 Enter Your Health Information</div></div>', unsafe_allow_html=True)
-    
-    # Getting the input data from the user with organized columns
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("**Pregnancy & Glucose**")
-        Pregnancies = st.number_input('Number of Pregnancies', min_value=0, max_value=20, value=0)
-        Glucose = st.number_input('Glucose Level (mg/dL)', min_value=0, max_value=300, value=120)
-    
-    with col2:
-        st.markdown("**Blood Pressure & Skin**")
-        BloodPressure = st.number_input('Blood Pressure (mmHg)', min_value=0, max_value=200, value=70)
-        SkinThickness = st.number_input('Skin Thickness (mm)', min_value=0, max_value=100, value=20)
-    
-    with col3:
-        st.markdown("**Insulin & BMI**")
-        Insulin = st.number_input('Insulin Level (mu U/ml)', min_value=0, max_value=800, value=80)
-        BMI = st.number_input('BMI (kg/m²)', min_value=0.0, max_value=70.0, value=25.0, step=0.1)
-    
-    col4, col5 = st.columns(2)
-    with col4:
-        DiabetesPedigreeFunction = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.5, value=0.5, step=0.1)
-    with col5:
-        Age = st.number_input('Age (years)', min_value=0, max_value=120, value=30)
+if select == 'Diabetes Prediction':
+    render_page_header(
+        'Diabetes Prediction',
+        'Enter a few measurements to estimate diabetes risk from the trained model.',
+        'Risk assessment'
+    )
+
+    render_metric_cards([
+        ('Model accuracy', '72%'),
+        ('Input features', '8 clinical values'),
+        ('Output', 'Binary risk estimate'),
+    ])
+
+    st.markdown('<div class="section-title">Patient measurements</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            Pregnancies = st.number_input('Pregnancies', min_value=0, max_value=20, value=0)
+            Glucose = st.number_input('Glucose (mg/dL)', min_value=0, max_value=300, value=120)
+
+        with col2:
+            BloodPressure = st.number_input('Blood pressure (mmHg)', min_value=0, max_value=200, value=70)
+            SkinThickness = st.number_input('Skin thickness (mm)', min_value=0, max_value=100, value=20)
+
+        with col3:
+            Insulin = st.number_input('Insulin', min_value=0, max_value=800, value=80)
+            BMI = st.number_input('BMI', min_value=0.0, max_value=70.0, value=25.0, step=0.1)
+
+        col4, col5 = st.columns(2)
+        with col4:
+            DiabetesPedigreeFunction = st.number_input('Diabetes pedigree function', min_value=0.0, max_value=2.5, value=0.5, step=0.1)
+        with col5:
+            Age = st.number_input('Age', min_value=0, max_value=120, value=30)
 
     col_button, col_empty = st.columns([1, 3])
     with col_button:
-        predict_button = st.button('🔍 Predict Diabetes', key='diabetes_predict')
+        predict_button = st.button('Predict diabetes', key='diabetes_predict')
 
     if predict_button:
         try:
@@ -233,87 +327,73 @@ if 'Diabetes' in select:
                 float(DiabetesPedigreeFunction),
                 int(Age)
             ]
-            
+
             diabetes_predict = diabetes_model.predict([input_data])
             probability = diabetes_model.predict_proba([input_data])
-            
+
             if diabetes_predict[0] == 1:
-                st.markdown(f"""
-                <div class="result-card result-positive">
-                ⚠️ Diabetes Detected<br>
-                Risk Level: {probability[0][1]*100:.1f}%
-                </div>
-                """, unsafe_allow_html=True)
-                st.warning("⚠️ **Prediction: You may have diabetes symptoms. Please consult a healthcare professional for proper diagnosis.**")
+                render_result(True, 'Diabetes prediction', probability[0][1] * 100)
+                st.warning('The model indicates elevated diabetes risk. Please review the result with a clinician.')
             else:
-                st.markdown(f"""
-                <div class="result-card result-negative">
-                ✅ No Diabetes Detected<br>
-                Risk Level: {probability[0][1]*100:.1f}%
-                </div>
-                """, unsafe_allow_html=True)
-                st.success("✅ **Prediction: Your health metrics suggest low diabetes risk. Maintain healthy habits!**")
-        
-        except ValueError as e:
-            st.error("❌ Please enter valid numeric values for all fields.")
+                render_result(False, 'Diabetes prediction', probability[0][1] * 100)
+                st.success('The model indicates low diabetes risk based on the provided values.')
+
+        except ValueError:
+            st.error('Please enter valid numeric values for all fields.')
 
 
 # Heart disease prediction page
-if 'Heart' in select:
-    st.markdown('<div class="main-header"><h1>❤️ Heart Disease Prediction System</h1><p>Enter your cardiovascular health metrics below</p></div>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="info-box">
-    <h4>📋 About This Assessment</h4>
-    This model analyzes cardiovascular indicators to predict heart disease risk.
-    <span class="accuracy-badge">80% Accuracy</span>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="input-section"><div class="input-section-title">📊 Enter Your Cardiovascular Information</div></div>', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("**Demographics & Vital Signs**")
-        Age = st.number_input('Age (years)', min_value=0, max_value=120, value=50)
-        Sex = st.selectbox('Sex', ['Female (0)', 'Male (1)'], key='heart_sex')
-        Sex = int(Sex.split('(')[1].split(')')[0])
-        Trestbps = st.number_input('Resting Blood Pressure (mmHg)', min_value=0, max_value=250, value=120)
-    
-    with col2:
-        st.markdown("**Blood Work & Tests**")
-        CP = st.selectbox('Chest Pain Type', 
-                         ['Typical Angina (0)', 'Atypical Angina (1)', 'Non-anginal Pain (2)', 'Asymptomatic (3)'], key='heart_cp')
-        CP = int(CP.split('(')[1].split(')')[0])
-        Chol = st.number_input('Cholesterol (mg/dL)', min_value=0, max_value=600, value=200)
-        Fbs = st.selectbox('Fasting Blood Sugar > 120 mg/dL', ['No (0)', 'Yes (1)'], key='heart_fbs')
-        Fbs = int(Fbs.split('(')[1].split(')')[0])
-    
-    with col3:
-        st.markdown("**ECG & Stress Test**")
-        Restecg = st.selectbox('Resting ECG Results',
-                              ['Normal (0)', 'ST-T Abnormality (1)', 'LV Hypertrophy (2)'], key='heart_ecg')
-        Restecg = int(Restecg.split('(')[1].split(')')[0])
-        Thalach = st.number_input('Max Heart Rate Achieved (bpm)', min_value=0, max_value=250, value=150)
-        Exang = st.selectbox('Exercise Induced Angina', ['No (0)', 'Yes (1)'], key='heart_exang')
-        Exang = int(Exang.split('(')[1].split(')')[0])
-    
-    col4, col5 = st.columns(2)
-    with col4:
-        Oldpeak = st.number_input('ST Depression (Oldpeak)', min_value=0.0, max_value=10.0, value=1.0, step=0.1)
-        Slope = st.selectbox('ST Slope', ['Upsloping (0)', 'Flat (1)', 'Downsloping (2)'], key='heart_slope')
-        Slope = int(Slope.split('(')[1].split(')')[0])
-    
-    with col5:
-        Ca = st.number_input('Major Vessels (0-3)', min_value=0, max_value=4, value=0)
-        Thal = st.selectbox('Thalassemia', 
-                           ['Normal (0)', 'Fixed Defect (1)', 'Reversible Defect (2)', 'Other (3)'], key='heart_thal')
-        Thal = int(Thal.split('(')[1].split(')')[0])
-    
+if select == 'Heart Disease Prediction':
+    render_page_header(
+        'Heart Disease Prediction',
+        'Use cardiovascular measurements to estimate disease risk.',
+        'Cardiac assessment'
+    )
+
+    render_metric_cards([
+        ('Model accuracy', '80%'),
+        ('Input features', '13 clinical values'),
+        ('Output', 'Binary risk estimate'),
+    ])
+
+    st.markdown('<div class="section-title">Patient measurements</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            Age = st.number_input('Age', min_value=0, max_value=120, value=50)
+            Sex = st.selectbox('Sex', ['Female (0)', 'Male (1)'], key='heart_sex')
+            Sex = int(Sex.split('(')[1].split(')')[0])
+            Trestbps = st.number_input('Resting blood pressure (mmHg)', min_value=0, max_value=250, value=120)
+
+        with col2:
+            CP = st.selectbox('Chest pain type', ['Typical angina (0)', 'Atypical angina (1)', 'Non-anginal pain (2)', 'Asymptomatic (3)'], key='heart_cp')
+            CP = int(CP.split('(')[1].split(')')[0])
+            Chol = st.number_input('Cholesterol (mg/dL)', min_value=0, max_value=600, value=200)
+            Fbs = st.selectbox('Fasting blood sugar > 120 mg/dL', ['No (0)', 'Yes (1)'], key='heart_fbs')
+            Fbs = int(Fbs.split('(')[1].split(')')[0])
+
+        with col3:
+            Restecg = st.selectbox('Resting ECG results', ['Normal (0)', 'ST-T abnormality (1)', 'LV hypertrophy (2)'], key='heart_ecg')
+            Restecg = int(Restecg.split('(')[1].split(')')[0])
+            Thalach = st.number_input('Max heart rate achieved (bpm)', min_value=0, max_value=250, value=150)
+            Exang = st.selectbox('Exercise induced angina', ['No (0)', 'Yes (1)'], key='heart_exang')
+            Exang = int(Exang.split('(')[1].split(')')[0])
+
+        col4, col5 = st.columns(2)
+        with col4:
+            Oldpeak = st.number_input('ST depression (Oldpeak)', min_value=0.0, max_value=10.0, value=1.0, step=0.1)
+            Slope = st.selectbox('ST slope', ['Upsloping (0)', 'Flat (1)', 'Downsloping (2)'], key='heart_slope')
+            Slope = int(Slope.split('(')[1].split(')')[0])
+
+        with col5:
+            Ca = st.number_input('Major vessels (0-3)', min_value=0, max_value=4, value=0)
+            Thal = st.selectbox('Thalassemia', ['Normal (0)', 'Fixed defect (1)', 'Reversible defect (2)', 'Other (3)'], key='heart_thal')
+            Thal = int(Thal.split('(')[1].split(')')[0])
+
     col_button, col_empty = st.columns([1, 3])
     with col_button:
-        predict_button = st.button('🔍 Predict Heart Disease', key='heart_predict')
+        predict_button = st.button('Predict heart disease', key='heart_predict')
 
     if predict_button:
         try:
@@ -332,102 +412,76 @@ if 'Heart' in select:
                 int(Ca),
                 int(Thal)
             ]
-            
+
             heart_disease_predict = heart_disease_model.predict([input_data])
             probability = heart_disease_model.predict_proba([input_data])
-            
+
             if heart_disease_predict[0] == 1:
-                st.markdown(f"""
-                <div class="result-card result-positive">
-                ⚠️ Heart Disease Detected<br>
-                Risk Level: {probability[0][1]*100:.1f}%
-                </div>
-                """, unsafe_allow_html=True)
-                st.warning("⚠️ **Prediction: You may have heart disease. Please consult a cardiologist immediately.**")
+                render_result(True, 'Heart disease prediction', probability[0][1] * 100)
+                st.warning('The model indicates elevated heart disease risk. Please consult a cardiologist.')
             else:
-                st.markdown(f"""
-                <div class="result-card result-negative">
-                ✅ No Heart Disease Detected<br>
-                Risk Level: {probability[0][1]*100:.1f}%
-                </div>
-                """, unsafe_allow_html=True)
-                st.success("✅ **Prediction: Your cardiovascular health looks good. Keep up regular exercise and healthy diet!**")
-        
+                render_result(False, 'Heart disease prediction', probability[0][1] * 100)
+                st.success('The model indicates lower heart disease risk based on the provided values.')
+
         except ValueError:
-            st.error("❌ Please enter valid values for all fields.")
+            st.error('Please enter valid values for all fields.')
 
 
 # Parkinson's prediction page
-if 'Parkinsons' in select:
-    st.markdown('<div class="main-header"><h1>🧠 Parkinson\'s Disease Prediction System</h1><p>Enter your voice and motor metrics below</p></div>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="info-box">
-    <h4>📋 About This Assessment</h4>
-    This model analyzes voice characteristics and motor control metrics to predict Parkinson's disease risk.
-    <span class="accuracy-badge">95% Accuracy</span>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="input-section"><div class="input-section-title">📊 Enter Your Vocal & Motor Metrics</div></div>', unsafe_allow_html=True)
-    
-    with st.expander("📖 Feature Guide", expanded=False):
-        st.markdown("""
-        - **MDVP Metrics**: Voice fundamental frequency and jitter measurements
-        - **Shimmer**: Voice intensity and variation
-        - **NHR/HNR**: Noise-to-Harmonic ratio indicators
-        - **RPDE/DFA**: Non-linear dynamical complexity measures
-        - **PPE**: Pitch Period Entropy for voice analysis
-        """)
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("**MDVP Frequency**")
-        MDVP_Fo = st.number_input('MDVP Fo(Hz)', min_value=0.0, max_value=500.0, value=150.0, step=0.1)
-        MDVP_Fhi = st.number_input('MDVP Fhi(Hz)', min_value=0.0, max_value=500.0, value=200.0, step=0.1)
-        MDVP_Flo = st.number_input('MDVP Flo(Hz)', min_value=0.0, max_value=500.0, value=100.0, step=0.1)
-        
-        st.markdown("**MDVP Jitter**")
-        MDVP_Jitter_Percent = st.number_input('MDVP Jitter (%)', min_value=0.0, max_value=1.0, value=0.005, step=0.0001, format="%.4f")
-        MDVP_Jitter_Abs = st.number_input('MDVP Jitter (Abs)', min_value=0.0, max_value=0.1, value=0.00005, step=0.00001, format="%.5f")
-    
-    with col2:
-        st.markdown("**MDVP Shimmer**")
-        MDVP_Shimmer = st.number_input('MDVP Shimmer', min_value=0.0, max_value=1.0, value=0.03, step=0.001, format="%.3f")
-        MDVP_Shimmer_dB = st.number_input('MDVP Shimmer(dB)', min_value=0.0, max_value=5.0, value=0.3, step=0.01, format="%.2f")
-        Shimmer_APQ3 = st.number_input('Shimmer APQ3', min_value=0.0, max_value=0.1, value=0.015, step=0.001, format="%.3f")
-        Shimmer_APQ5 = st.number_input('Shimmer APQ5', min_value=0.0, max_value=0.1, value=0.02, step=0.001, format="%.3f")
-        
-        st.markdown("**Shimmer Advanced**")
-        MDVP_APQ = st.number_input('MDVP APQ', min_value=0.0, max_value=0.1, value=0.02, step=0.001, format="%.3f")
-        Shimmer_DDA = st.number_input('Shimmer DDA', min_value=0.0, max_value=0.1, value=0.03, step=0.001, format="%.3f")
-    
-    with col3:
-        st.markdown("**Ratios & Entropy**")
-        NHR = st.number_input('NHR', min_value=0.0, max_value=1.0, value=0.02, step=0.01, format="%.2f")
-        HNR = st.number_input('HNR', min_value=0.0, max_value=40.0, value=25.0, step=0.5)
-        MDVP_RAP = st.number_input('MDVP RAP', min_value=0.0, max_value=0.1, value=0.003, step=0.0001, format="%.4f")
-        MDVP_PPQ = st.number_input('MDVP PPQ', min_value=0.0, max_value=0.1, value=0.004, step=0.0001, format="%.4f")
-        Jitter_DDP = st.number_input('Jitter DDP', min_value=0.0, max_value=0.1, value=0.006, step=0.0001, format="%.4f")
-    
-    col4, col5 = st.columns(2)
-    
-    with col4:
-        st.markdown("**Non-linear Measures**")
-        RPDE = st.number_input('RPDE', min_value=0.0, max_value=1.0, value=0.5, step=0.01, format="%.2f")
-        DFA = st.number_input('DFA', min_value=0.0, max_value=1.0, value=0.7, step=0.01, format="%.2f")
-        Spread1 = st.number_input('Spread1', min_value=-10.0, max_value=10.0, value=-5.0, step=0.1, format="%.1f")
-    
-    with col5:
-        st.markdown("**Advanced Metrics**")
-        Spread2 = st.number_input('Spread2', min_value=0.0, max_value=1.0, value=0.2, step=0.01, format="%.2f")
-        D2 = st.number_input('D2', min_value=0.0, max_value=5.0, value=2.5, step=0.1, format="%.1f")
-        PPE = st.number_input('PPE', min_value=0.0, max_value=1.0, value=0.2, step=0.01, format="%.2f")
-    
+if select == 'Parkinsons Prediction':
+    render_page_header(
+        "Parkinson's Prediction",
+        'Use speech and vocal measurements to estimate Parkinsons risk.',
+        'Neurological assessment'
+    )
+
+    render_metric_cards([
+        ('Model accuracy', '95%'),
+        ('Input features', '22 vocal metrics'),
+        ('Output', 'Binary risk estimate'),
+    ])
+
+    st.markdown('<div class="section-title">Voice measurements</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            MDVP_Fo = st.number_input('MDVP Fo (Hz)', min_value=0.0, max_value=500.0, value=150.0, step=0.1)
+            MDVP_Fhi = st.number_input('MDVP Fhi (Hz)', min_value=0.0, max_value=500.0, value=200.0, step=0.1)
+            MDVP_Flo = st.number_input('MDVP Flo (Hz)', min_value=0.0, max_value=500.0, value=100.0, step=0.1)
+            MDVP_Jitter_Percent = st.number_input('MDVP jitter (%)', min_value=0.0, max_value=1.0, value=0.005, step=0.0001, format='%.4f')
+            MDVP_Jitter_Abs = st.number_input('MDVP jitter (abs)', min_value=0.0, max_value=0.1, value=0.00005, step=0.00001, format='%.5f')
+
+        with col2:
+            MDVP_Shimmer = st.number_input('MDVP shimmer', min_value=0.0, max_value=1.0, value=0.03, step=0.001, format='%.3f')
+            MDVP_Shimmer_dB = st.number_input('MDVP shimmer (dB)', min_value=0.0, max_value=5.0, value=0.3, step=0.01, format='%.2f')
+            Shimmer_APQ3 = st.number_input('Shimmer APQ3', min_value=0.0, max_value=0.1, value=0.015, step=0.001, format='%.3f')
+            Shimmer_APQ5 = st.number_input('Shimmer APQ5', min_value=0.0, max_value=0.1, value=0.02, step=0.001, format='%.3f')
+            MDVP_APQ = st.number_input('MDVP APQ', min_value=0.0, max_value=0.1, value=0.02, step=0.001, format='%.3f')
+            Shimmer_DDA = st.number_input('Shimmer DDA', min_value=0.0, max_value=0.1, value=0.03, step=0.001, format='%.3f')
+
+        with col3:
+            NHR = st.number_input('NHR', min_value=0.0, max_value=1.0, value=0.02, step=0.01, format='%.2f')
+            HNR = st.number_input('HNR', min_value=0.0, max_value=40.0, value=25.0, step=0.5)
+            MDVP_RAP = st.number_input('MDVP RAP', min_value=0.0, max_value=0.1, value=0.003, step=0.0001, format='%.4f')
+            MDVP_PPQ = st.number_input('MDVP PPQ', min_value=0.0, max_value=0.1, value=0.004, step=0.0001, format='%.4f')
+            Jitter_DDP = st.number_input('Jitter DDP', min_value=0.0, max_value=0.1, value=0.006, step=0.0001, format='%.4f')
+
+        col4, col5 = st.columns(2)
+
+        with col4:
+            RPDE = st.number_input('RPDE', min_value=0.0, max_value=1.0, value=0.5, step=0.01, format='%.2f')
+            DFA = st.number_input('DFA', min_value=0.0, max_value=1.0, value=0.7, step=0.01, format='%.2f')
+            Spread1 = st.number_input('Spread1', min_value=-10.0, max_value=10.0, value=-5.0, step=0.1, format='%.1f')
+
+        with col5:
+            Spread2 = st.number_input('Spread2', min_value=0.0, max_value=1.0, value=0.2, step=0.01, format='%.2f')
+            D2 = st.number_input('D2', min_value=0.0, max_value=5.0, value=2.5, step=0.1, format='%.1f')
+            PPE = st.number_input('PPE', min_value=0.0, max_value=1.0, value=0.2, step=0.01, format='%.2f')
+
     col_button, col_empty = st.columns([1, 3])
     with col_button:
-        predict_button = st.button('🔍 Predict Parkinsons', key='parkinsons_predict')
+        predict_button = st.button('Predict Parkinsons', key='parkinsons_predict')
 
     if predict_button:
         try:
@@ -455,26 +509,16 @@ if 'Parkinsons' in select:
                 float(D2),
                 float(PPE)
             ]
-            
+
             parkinson_predict = parkinson_model.predict([input_data])
             probability = parkinson_model.predict_proba([input_data])
-            
+
             if parkinson_predict[0] == 1:
-                st.markdown(f"""
-                <div class="result-card result-positive">
-                ⚠️ Parkinson's Disease Detected<br>
-                Risk Level: {probability[0][1]*100:.1f}%
-                </div>
-                """, unsafe_allow_html=True)
-                st.warning("⚠️ **Prediction: Parkinson's disease symptoms detected. Please consult a neurologist for proper diagnosis.**")
+                render_result(True, "Parkinson's prediction", probability[0][1] * 100)
+                st.warning('The model indicates elevated Parkinsons risk. Please consult a neurologist.')
             else:
-                st.markdown(f"""
-                <div class="result-card result-negative">
-                ✅ No Parkinson's Disease Detected<br>
-                Risk Level: {probability[0][1]*100:.1f}%
-                </div>
-                """, unsafe_allow_html=True)
-                st.success("✅ **Prediction: Your vocal metrics suggest no Parkinson's disease. Keep monitoring your health!**")
-        
-        except ValueError as e:
-            st.error("❌ Please enter valid numeric values for all fields.")
+                render_result(False, "Parkinson's prediction", probability[0][1] * 100)
+                st.success('The model indicates lower Parkinsons risk based on the provided values.')
+
+        except ValueError:
+            st.error('Please enter valid numeric values for all fields.')
